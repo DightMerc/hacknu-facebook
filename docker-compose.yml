@@ -1,11 +1,11 @@
-version: '3.7'
+version: '3.3'
 
 services:
   web:
-    build: ./app
+    build: ./backend
     command: python manage.py runserver 0.0.0.0:8000
     volumes:
-      - ./app/:/usr/src/app/
+      - ./backend/:/usr/src/backend/
     ports:
       - 8000:8000
     hostname: main
@@ -20,9 +20,6 @@ services:
       - SQL_HOST=${SQL_HOST}
       - SQL_PORT=${SQL_PORT}
       - DATABASE=${DATABASE}
-      - TWILIO_ACCOUNT_SID=${TWILIO_ACCOUNT_SID}
-      - TWILIO_AUTH_TOKEN=${TWILIO_AUTH_TOKEN}
-      - TWILIO_PHONE_NUMBER=${TWILIO_PHONE_NUMBER}
     depends_on:
       - db
   db:
