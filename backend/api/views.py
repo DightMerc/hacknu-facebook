@@ -7,6 +7,7 @@ from rest_framework import status
 from datetime import datetime
 
 from authentification import models
+from core import models as CoreModels
 import api.serializers as serializers
 
 from django.contrib.auth import authenticate
@@ -374,3 +375,13 @@ def sendNotification(users, title, text):
             message_title=message_title,
             message_body=message_body
             )
+
+
+class CategoryListView(APIView):
+
+    def get(self, request, version):
+        categories = CoreModels.Category.objects.all()
+        return Response(
+            serializers.CategorySerializer(categories, many=True).data,
+            status=status.HTTP_200_OK
+        )

@@ -22,9 +22,12 @@ urlpatterns = [
 
     path('language/', views.LanguageListView.as_view()),
     path('devices/', views.DeviceView.as_view()),
+    path('categories/', views.CategoryListView.as_view()),
+
 
     path('<str:GUID>/auth/phone/', views.AuthDeviceView.as_view()),
     path('<str:GUID>/auth/phone/check/', views.AuthDeviceCheckView.as_view()),
+    
 
     path('<str:GUID>/user/', views.UserView.as_view()),
 

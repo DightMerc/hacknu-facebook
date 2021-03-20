@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
 from authentification import models
+from core import models as CoreModels
 from django.conf import settings
 
 
@@ -44,3 +45,9 @@ class UserSerializer(serializers.Serializer):
     firstname = serializers.CharField()
     surname = serializers.CharField()
     photo = UserPhotoSerializer()
+
+
+class CategorySerializer(serializers.Serializer):
+
+    GUID = serializers.CharField()
+    title = serializers.CharField()
