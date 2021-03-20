@@ -256,7 +256,15 @@ class UserView(APIView):
                 status=status.HTTP_404_NOT_FOUND
             )
 
-        result = serializers.UserSerializer(User).data
+        try:
+            MobileUser = CoreModels.MobileUser.objects.get(user=User)
+        except CoreModels.MobileUser.DoesNotExist:
+            return Response(
+                'user not found',
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        result = serializers.MobileUserSerializer(MobileUser).data
 
         return Response(
             result,
@@ -486,3 +494,48 @@ class GetUsersView(APIView):
             data,
             status=status.HTTP_200_OK
         )
+
+
+class TogglePending(APIView):
+
+    def get(self, request, version, GUID):
+
+        try:
+            Device = models.Device.objects.get(GUID=GUID)
+        except models.Device.DoesNotExist:
+            return Response(
+                'device with selected GUID not found',
+                status=status.HTTP_404_NOT_FOUND
+                )
+
+        if not Device.active:
+            return Response(
+                'device with selected GUID is inactive',
+                status=status.HTTP_403_FORBIDDEN
+                )
+
+        try:
+            User = models.User.objects.get(devices=Device)
+        except models.User.DoesNotExist:
+            return Response(
+                'user not found',
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        try:
+            MobileUser = CoreModels.MobileUser.objects.get(user=User)
+        except CoreModels.MobileUser.DoesNotExist:
+            return Response(
+                'user not found',
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        MobileUser.pending = not MobileUser.pending
+
+        MobileUser.save()
+
+        return Response(
+            'OK',
+            status=status.HTTP_200_OK
+        )
+        

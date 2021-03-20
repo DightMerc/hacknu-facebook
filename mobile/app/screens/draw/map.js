@@ -7,6 +7,9 @@ import * as Permissions from 'expo-permissions';
 import * as Location from 'expo-location';
 
 import GetUsersByCategory from '../../network/GetUsersByCategory.js'
+import GetSetPending from '../../network/GetSetPending.js'
+import GetUser from '../../network/GetUser.js'
+
 import { AsyncStorage } from 'react-native';
 
 
@@ -109,8 +112,12 @@ export default class App extends React.Component {
       
       
       async componentDidMount(){
-        
-        setTimeout(this.update_info, 5000);
+        GetUser.then(
+          (result)=>{
+            console.log(result)
+          }
+        )
+        setInterval(this.update_info, 5000);
 
     }
 
