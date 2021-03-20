@@ -33,7 +33,7 @@ export default class AuthScreen extends React.Component {
                 AsyncStorage.setItem('user', 'true').then(
                   () => {
                     
-                    this.props.navigation.navigate('CodeCheck', {code: '1984'})
+                    this.props.navigation.navigate('CodeCheck', {code: result.result})
           
                   }
                 )

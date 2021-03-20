@@ -29,10 +29,15 @@ export default class AuthScreen extends React.Component {
         PostCodeCheck(value, this.state.Login).then(
           (result)=>{
             console.log(result)
-            if (this.state.Login == this.props.route.params.code){
-              this.props.navigation.navigate('CreateProfile')
-      
-            } 
+            if (!result.error){
+              if (result.result){
+                this.props.navigation.navigate('CreateProfile')
+
+              }else{
+                this.props.navigation.navigate('Home')
+
+              }
+            }
           }
         )
       }

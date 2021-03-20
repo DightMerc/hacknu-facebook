@@ -213,7 +213,7 @@ class AuthDeviceCheckView(APIView):
         if User is not None:
             content = serializers.UserSerializer(User).data
         else:
-            content = []
+            content = None
 
         return Response(
             content,
