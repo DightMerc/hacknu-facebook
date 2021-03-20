@@ -79,10 +79,13 @@ export default class App extends React.Component {
           region.longitude = parseFloat(location.coords.longitude)
           region.latitudeDelta = LATITUDE_DELTA
           region.longitudeDelta = LONGITUDE_DELTA
+          
+          AsyncStorage.getItem("device").then(device => {
+            PostSetLocation(device,{
+              'latitude': location.coords.latitude,
+              'longitude': location.coords.longitude
+            })
 
-          await PostSetLocation({
-            'latitude': location.coords.latitude,
-            'longitude': location.coords.longitude
           })
   
           this.setState({ region: region})

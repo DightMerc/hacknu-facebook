@@ -553,7 +553,7 @@ class UpdateLocation(APIView):
                 )
 
         try:
-            location = str(data['location'])
+            location = data['location']
         except Exception as e:
             return Response(
                 'location is not set',
