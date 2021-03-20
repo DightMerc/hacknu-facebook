@@ -68,7 +68,6 @@ export default class App extends React.Component {
 
       update_info = async () => {
         if (this.state.shareMyLocation){
-          console.log('ok')
           
           await this.updateUsers()
           let location = await this.getLocationAsync()

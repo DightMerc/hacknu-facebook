@@ -28,7 +28,9 @@ urlpatterns = [
     path('<str:GUID>/auth/phone/check/', views.AuthDeviceCheckView.as_view()),
 
     path('<str:GUID>/user/', views.UserView.as_view()),
-    path('<str:GUID>/user/pending', views.TogglePending.as_view()),
+    path('<str:GUID>/user/pending/', views.TogglePending.as_view()),
+    path('<str:GUID>/user/location/', views.UpdateLocation.as_view()),
+
 
     path('<str:GUID>/category/', views.CategoryView.as_view()),
     path('<str:GUID>/user/<category>/', views.GetUsersView.as_view()),
