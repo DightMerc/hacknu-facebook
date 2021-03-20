@@ -434,10 +434,6 @@ class CategoryView(APIView):
         except CoreModels.MobileUser.DoesNotExist:
             MobileUser = CoreModels.MobileUser()
             MobileUser.user = User
-            return Response(
-                'user not found',
-                status=status.HTTP_404_NOT_FOUND
-            )
 
         try:
             Category = CoreModels.Category.objects.get(title=category)
