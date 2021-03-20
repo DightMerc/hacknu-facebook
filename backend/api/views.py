@@ -450,3 +450,39 @@ class CategoryView(APIView):
             'ok',
             status=status.HTTP_200_OK
         )
+
+
+class GetUsersView(APIView):
+
+    def get(self, request, version, GUID, category):
+
+        try:
+            Device = models.Device.objects.get(GUID=GUID)
+        except models.Device.DoesNotExist:
+            return Response(
+                'device with selected GUID not found',
+                status=status.HTTP_404_NOT_FOUND
+                )
+
+        if not Device.active:
+            return Response(
+                'device with selected GUID is inactive',
+                status=status.HTTP_403_FORBIDDEN
+                )
+
+        try:
+            Category = CoreModels.Category.objects.get(title=category)
+        except CoreModels.Category.DoesNotExist:
+            return Response(
+                'category not found',
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        users = CoreModels.MobileUser.objects.filter(category=category)
+
+        data = serializers.MobileUserSerializer(users, many=True).data
+
+        return Response(
+            data,
+            status=status.HTTP_200_OK
+        )

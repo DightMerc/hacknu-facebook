@@ -59,5 +59,23 @@ class MobileUser(models.Model):
         blank=True
     )
 
+    latitude = models.CharField(
+        max_length=255,
+        default='',
+        blank=True,
+        null=True
+    )
+
+    longitude = models.CharField(
+        max_length=255,
+        default='',
+        blank=True,
+        null=True
+    )
+
+    pending = models.BooleanField(
+        default=False
+    )
+
     def __str__(self):
         return self.user.firstname
