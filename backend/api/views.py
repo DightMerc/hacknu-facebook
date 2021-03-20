@@ -202,7 +202,6 @@ class AuthDeviceCheckView(APIView):
 
         try:
             User = models.User.objects.get(devices=Device)
-            driver = models.Driver.objects.get(user=User)
             for device in User.devices.all():
                 if device.id != Device.id:
                     device.active = False

@@ -30,7 +30,7 @@ export default class AuthScreen extends React.Component {
           (result)=>{
             console.log(result)
             if (!result.error){
-              if (result.result){
+              if (result.result == ''){
                 this.props.navigation.navigate('CreateProfile')
 
               }else{

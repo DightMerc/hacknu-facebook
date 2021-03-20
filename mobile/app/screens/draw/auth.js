@@ -30,10 +30,16 @@ export default class AuthScreen extends React.Component {
           (result)=>{
               console.log(result)
               if (!result.error){
-                AsyncStorage.setItem('user', 'true').then(
+                AsyncStorage.setItem('phone', this.state.Login).then(
                   () => {
                     
-                    this.props.navigation.navigate('CodeCheck', {code: result.result})
+                    AsyncStorage.setItem('user', 'true').then(
+                      () => {
+                        
+                        this.props.navigation.navigate('CodeCheck', {code: result.result})
+              
+                      }
+                    )
           
                   }
                 )

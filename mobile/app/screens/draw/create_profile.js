@@ -48,9 +48,10 @@ export default class AuthScreen extends React.Component {
     Keyboard.dismiss()
     if (this.validate()) {
 
-      AsyncStorage.getItem("device").then(value => {
-       
-        PostUserCreation(value, '123', this.state.Login).then(
+      AsyncStorage.getItem("device").then(device => {
+      AsyncStorage.getItem("phone").then(phone => {
+
+        PostUserCreation(device, phone, this.state.Login).then(
           (result)=>{
             console.log(result)
               if (!result.error){
@@ -71,6 +72,8 @@ export default class AuthScreen extends React.Component {
               }
           }
         )
+      })
+       
       }
       )
 
