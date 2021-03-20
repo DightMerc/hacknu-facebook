@@ -7,6 +7,8 @@ import { AsyncStorage } from 'react-native';
 import COLORS from '../colors.js';
 import ButtonCustom from '../controls/ButtonCustom';
 
+import PostPhoneAuth from '../../network/PostPhoneAuth.js'
+
 
 export default class AuthScreen extends React.Component {
 
@@ -22,14 +24,24 @@ export default class AuthScreen extends React.Component {
   Login = () => {
     Keyboard.dismiss()
     if (this.validate()) {
-
-      AsyncStorage.setItem('user', 'true').then(
-        () => {
-
-          this.props.navigation.navigate('CodeCheck')
-
-        }
+      AsyncStorage.getItem("device").then(value => {
+       
+        PostPhoneAuth(value, this.state.Login).then(
+          (result)=>{
+              if (!result.error){
+                AsyncStorage.setItem('user', 'true').then(
+                  () => {
+                    
+                    this.props.navigation.navigate('CodeCheck', {code: '1984'})
+          
+                  }
+                )
+              }
+          }
+        )
+      }
       )
+      
     }
   }
 

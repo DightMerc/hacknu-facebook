@@ -208,10 +208,15 @@ class AuthDeviceCheckView(APIView):
                     device.active = False
                     device.save()
         except Exception as e:
-            pass
+            User = None
+
+        if User is not None:
+            content = serializers.UserSerializer(User).data
+        else:
+            content = []
 
         return Response(
-            'accepted',
+            content,
             status=status.HTTP_202_ACCEPTED
         )
 

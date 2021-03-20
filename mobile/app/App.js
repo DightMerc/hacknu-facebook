@@ -21,9 +21,7 @@ const Stack = createStackNavigator();
 
 import { decode, encode } from 'base-64'
 
-import GetRequestTypeList from './network/GetRequestTypeList.js'
-import GetMaterialList from './network/GetMaterialList.js'
-import GetResponsibleList from './network/GetResponsibleList.js'
+import PostDeviceSignUp from './network/PostDeviceSignUp.js'
 import GetAllRequestTypes from './database/request_type.js'
 
 import Engine from './database/base.js'
@@ -55,7 +53,7 @@ export default class App extends React.Component {
 
   state = {
     fontsLoaded: false,
-    screen: 'Auth',
+    screen: 'Home',
     loading: true,
   };
 
@@ -66,43 +64,38 @@ export default class App extends React.Component {
 
   componentDidMount() {
 
-    AsyncStorage.getItem("user1").then(value => {
+    AsyncStorage.getItem("user").then(value => {
       if (value == null) {
         this.setState({ screen: 'Auth' })
       }
       else {
-        this.setState({ screen: 'Home' })
+        this.setState({ screen: 'Home', loading: false })
+      }
+    }
+    )
+
+    AsyncStorage.getItem("device").then(value => {
+      if (value == null) {
+        PostDeviceSignUp().then(
+          (response)=>{
+            AsyncStorage.setItem('device', response.result.content.GUID).then(
+              this.setState({loading: false})
+            )
+          }
+        )
+      }
+      else {
+        this.setState({ loading: false })
       }
     }
     )
 
     this._loadFontsAsync();
-    this.LoadStaticInfo()
-  }
-
-  LoadStaticInfo = () => {
-    GetRequestTypeList().then(
-      (result) => {
-        engine.SetRequestType(result.result)
-      }
-    )
-
-    GetMaterialList().then(
-      (result) => {
-        engine.SetMaterial(result.result)
-      }
-    )
-
-    GetResponsibleList().then(
-      (result) => {
-        engine.SetResponsible(result.result)
-      }
-    )
   }
 
   render() {
 
-    if (!this.state.fontsLoaded) {
+    if (!this.state.fontsLoaded || this.state.loading) {
       return <AppLoading />
     } else {
       return (

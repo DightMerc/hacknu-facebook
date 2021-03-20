@@ -1,8 +1,6 @@
 const axios = require('axios');
 
-const ENGINE_URL = 'http://onezeth.com:8033/SD/hs/MAPI'
-const LOGIN = 'Admin_Api'
-const PASSWORD = '!QAZ2wsx'
+const ENGINE_URL = 'http://onezeth.com:8014/api/v1'
 
 function HandleError(url, method, error, body={}){
 
@@ -43,13 +41,7 @@ export default async function SendRequest(url, method, body=null){
 
     if (method == 'GET'){
         await axios.get(
-            end_url,
-            {
-                auth: {
-                  username: LOGIN,
-                  password: PASSWORD
-                }
-            }
+            end_url
             )
         .then((response)=>{
             console.log(
@@ -73,7 +65,30 @@ export default async function SendRequest(url, method, body=null){
 
         return result
     } else if (method == 'POST'){
-        
+        await axios.post(
+            end_url,
+            body
+        ).then((response)=>{
+            console.log(
+                `
+                REQUEST SUCCESS
+                --
+                METHOD: ${method}
+                URL: ${end_url}
+                --
+                CODE: ${response.status}
+                `
+            )
+            result = {
+                'result': response.data,
+                'error': false
+            }
+        })
+        .catch((error)=>{
+            result = HandleError(end_url, method, error)
+        })
+
+        return result
     }
 
 }

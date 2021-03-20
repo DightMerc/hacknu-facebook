@@ -26,7 +26,7 @@ COPY ./entrypoint.sh .
 # copy project
 COPY . .
 
-# run entrypoint.shentrypoint
+# run entrypoint.she ntrypoint
 ENTRYPOINT ["/usr/src/backend/entrypoint.sh"]
 # ENTRYPOINT ["/usr/src/app/create_user.sh"]
 

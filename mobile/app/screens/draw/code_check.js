@@ -23,13 +23,11 @@ export default class AuthScreen extends React.Component {
     Keyboard.dismiss()
     if (this.validate()) {
 
-      AsyncStorage.setItem('user', 'true').then(
-        () => {
-          
-          this.props.navigation.navigate('CreateProfile')
+      if (this.state.Login == this.props.route.params.code){
+        this.props.navigation.navigate('CreateProfile')
 
-        }
-      )
+      }        
+
     }
   }
 
@@ -55,7 +53,7 @@ export default class AuthScreen extends React.Component {
             <View style={styles.SmallContainer}>
               <TextInputModified
                 ref={(input) => { this.CodeInput = input }}
-                placeholder='Code'
+                placeholder={this.props.route.params.code}
                 errorPlaceholder='Code*'
                 placeholderTextColor={COLORS.BLACK}
                 value={this.state.Login}

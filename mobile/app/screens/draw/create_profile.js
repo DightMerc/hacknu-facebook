@@ -6,6 +6,7 @@ import { CommonActions } from '@react-navigation/native';
 import { AsyncStorage } from 'react-native';
 import COLORS from '../colors.js';
 import ButtonCustom from '../controls/ButtonCustom';
+import PostUserCreation from '../../network/PostUserCreation.js'
 
 import * as ImagePicker from 'expo-image-picker';
 
@@ -47,19 +48,32 @@ export default class AuthScreen extends React.Component {
     Keyboard.dismiss()
     if (this.validate()) {
 
-      AsyncStorage.setItem('user', 'true').then(
-        () => {
+      AsyncStorage.getItem("device").then(value => {
+       
+        PostUserCreation(value, '123', this.state.Login).then(
+          (result)=>{
+            console.log(result)
+              if (!result.error){
+                AsyncStorage.setItem('user', 'true').then(
+                  () => {
+                    
+                    this.props.navigation.dispatch(
+                      CommonActions.reset({
+                        index: 0,
+                        routes: [
+                          { name: 'ChooseCommunity' },
+                        ]
+                      })
+                    );
           
-          this.props.navigation.dispatch(
-            CommonActions.reset({
-              index: 0,
-              routes: [
-                { name: 'ChooseCommunity' },
-              ]
-            })
-          );
-        }
+                  }
+                )
+              }
+          }
+        )
+      }
       )
+
     }
   }
 
