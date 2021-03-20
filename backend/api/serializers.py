@@ -1,4 +1,6 @@
+from django.db.models.fields import BooleanField
 from rest_framework import serializers
+from rest_framework.fields import CharField
 
 from authentification import models
 from core import models as CoreModels
@@ -51,3 +53,12 @@ class CategorySerializer(serializers.Serializer):
 
     GUID = serializers.CharField()
     title = serializers.CharField()
+
+
+class MobileUserSerializer(serializers.Serializer):
+
+    user = UserSerializer()
+    category = CategorySerializer()
+    latitude = serializers.CharField()
+    longitude = serializers.CharField()
+    pending = serializers.BooleanField()
