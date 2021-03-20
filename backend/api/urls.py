@@ -30,5 +30,7 @@ urlpatterns = [
     
 
     path('<str:GUID>/user/', views.UserView.as_view()),
+    path('<str:GUID>/category/', views.CategoryView.as_view()),
+
 
 ]

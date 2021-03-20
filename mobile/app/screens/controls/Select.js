@@ -49,7 +49,7 @@ export default class Select extends React.Component {
               return (
                 <TouchableOpacity
                   style={styles.itemContainer}
-                  key={item.id}
+                  key={item.GUID}
                   onPress={() => {
                     this.onValueChange(item.title),
                       this.setState({ collapsed: false })

@@ -34,7 +34,7 @@ export default class AuthScreen extends React.Component {
                 this.props.navigation.navigate('CreateProfile')
 
               }else{
-                this.props.navigation.navigate('Home')
+                this.props.navigation.navigate('ChooseCommunity')
 
               }
             }

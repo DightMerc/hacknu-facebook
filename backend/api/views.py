@@ -385,3 +385,70 @@ class CategoryListView(APIView):
             serializers.CategorySerializer(categories, many=True).data,
             status=status.HTTP_200_OK
         )
+
+
+class CategoryView(APIView):
+
+    def post(self, request, version):
+
+        try:
+            data = json.loads(request.body)
+        except Exception as e:
+            return Response(
+                'request body not set',
+                status=status.HTTP_400_BAD_REQUEST
+                )
+
+        try:
+            category = str(data['category'])
+        except Exception as e:
+            return Response(
+                'category is not set',
+                status=status.HTTP_400_BAD_REQUEST
+                )
+
+        try:
+            Device = models.Device.objects.get(GUID=GUID)
+        except models.Device.DoesNotExist:
+            return Response(
+                'device with selected GUID not found',
+                status=status.HTTP_404_NOT_FOUND
+                )
+
+        if not Device.active:
+            return Response(
+                'device with selected GUID is inactive',
+                status=status.HTTP_403_FORBIDDEN
+                )
+
+        try:
+            User = models.User.objects.get(devices=Device)
+        except models.User.DoesNotExist:
+            return Response(
+                'user not found',
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        try:
+            MobileUser = CoreModels.MobileUser.objects.get(user=User)
+        except CoreModels.MobileUser.DoesNotExist:
+            return Response(
+                'user not found',
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        try:
+            Category = CoreModels.Category.objects.get(title=category)
+        except CoreModels.Category.DoesNotExist:
+            return Response(
+                'category not found',
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        MobileUser.category = Category
+        MobileUser.save()
+
+        return Response(
+            'ok',
+            status==status.HTTP_200_OK
+        )

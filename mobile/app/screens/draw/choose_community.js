@@ -8,6 +8,9 @@ import COLORS from '../colors.js';
 import ButtonCustom from '../controls/ButtonCustom';
 import Select from '../controls/Select.js';
 
+import PostSetCategory from '../../network/PostSetCategory.js'
+
+import GetCategoriesList from '../../network/GetCategoriesList.js'
 
 
 export default class AuthScreen extends React.Component {
@@ -39,19 +42,39 @@ export default class AuthScreen extends React.Component {
   onChangeCode = (value) => {
     this.setState({ Login: value })
   }
+
+  componentDidMount(){
+    GetCategoriesList().then(
+      (result)=>{
+        console.log(result)
+        this.setState({
+          nomenclature: result.result
+        })
+      }
+    )
+  }
   
 
   Login = () => {
     Keyboard.dismiss()
     if (this.validate()) {
+      PostSetCategory.then(
+        (result)=>{
+          console.log(result)
+          if (!result.error){
 
-      AsyncStorage.setItem('user', 'true').then(
-        () => {
-          
-          this.props.navigation.navigate('Home')
+            AsyncStorage.setItem('team', this.state.Login).then(
+              () => {
+                
+                this.props.navigation.navigate('Home')
+      
+              }
+            )
 
+          }
         }
       )
+
     }
   }
 

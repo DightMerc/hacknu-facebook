@@ -22,7 +22,7 @@ export const Popup = ({ children, visible, closeBtn, onClose, noPadding }) => {
         {
           closeBtn ?
             <View style={styles.closeBtnContainer}>
-              <ButtonCustom onPress={onClose} type='green' disbles={false}>Закрыть</ButtonCustom>
+              <ButtonCustom onPress={onClose} type='green' disbles={false}>Close</ButtonCustom>
             </View>
             :
             null
