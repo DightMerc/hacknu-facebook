@@ -6,6 +6,7 @@ import { CommonActions } from '@react-navigation/native';
 import { AsyncStorage } from 'react-native';
 import COLORS from '../colors.js';
 import ButtonCustom from '../controls/ButtonCustom';
+import PostCodeCheck from '../../network/PostCodeCheck.js';
 
 
 export default class AuthScreen extends React.Component {
@@ -23,10 +24,21 @@ export default class AuthScreen extends React.Component {
     Keyboard.dismiss()
     if (this.validate()) {
 
-      if (this.state.Login == this.props.route.params.code){
-        this.props.navigation.navigate('CreateProfile')
+      AsyncStorage.getItem("device").then(value => {
+       
+        PostCodeCheck(value, this.state.Login).then(
+          (result)=>{
+            console.log(result)
+            if (this.state.Login == this.props.route.params.code){
+              this.props.navigation.navigate('CreateProfile')
+      
+            } 
+          }
+        )
+      }
+      )
 
-      }        
+             
 
     }
   }

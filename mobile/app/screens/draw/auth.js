@@ -28,6 +28,7 @@ export default class AuthScreen extends React.Component {
        
         PostPhoneAuth(value, this.state.Login).then(
           (result)=>{
+              console.log(result)
               if (!result.error){
                 AsyncStorage.setItem('user', 'true').then(
                   () => {

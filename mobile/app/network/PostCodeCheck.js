@@ -2,12 +2,12 @@ import SendRequest from './base.js'
 
 import { AsyncStorage } from 'react-native';
 
-export default async function PostDeviceSignUp(guid, phone){
+export default async function PostCodeCheck(guid, phone){
 
-        let url = `/${guid}/auth/phone/`
+        let url = `/${guid}/auth/phone/check/`
     
         let body = {
-                'phone': phone
+                'code': phone
             }
         
       return await SendRequest(url, 'POST', body=body)

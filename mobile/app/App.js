@@ -64,7 +64,7 @@ export default class App extends React.Component {
 
   componentDidMount() {
 
-    AsyncStorage.getItem("user").then(value => {
+    AsyncStorage.getItem("user1").then(value => {
       if (value == null) {
         this.setState({ screen: 'Auth' })
       }

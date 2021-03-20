@@ -146,7 +146,7 @@ class AuthDeviceView(APIView):
         User.devices.add(Device)
 
         return Response(
-            'verification code sent: ' + str(verification_code),
+            str(verification_code),
             status=status.HTTP_200_OK
         )
 
