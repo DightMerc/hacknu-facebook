@@ -448,5 +448,5 @@ class CategoryView(APIView):
 
         return Response(
             'ok',
-            status==status.HTTP_200_OK
+            status=status.HTTP_200_OK
         )

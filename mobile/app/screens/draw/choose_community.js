@@ -60,7 +60,7 @@ export default class AuthScreen extends React.Component {
     if (this.validate()) {
       AsyncStorage.getItem("device").then(device => {
 
-        PostSetCategory(device, this.state.Login).then(
+        PostSetCategory(device, this.state.team).then(
           (result)=>{
             console.log(result)
             if (!result.error){
