@@ -6,6 +6,10 @@ import { StyleSheet, Text, View, Dimensions, Switch, Image } from 'react-native'
 import * as Permissions from 'expo-permissions';
 import * as Location from 'expo-location';
 
+import GetUsersByCategory from '../../network/GetUsersByCategory.js'
+import { AsyncStorage } from 'react-native';
+
+
 const {width, height} = Dimensions.get('window')
 
 const SCREEN_HEIGHT = height
@@ -59,9 +63,10 @@ export default class App extends React.Component {
         }
       }
 
-      location_set = async () => {
+      update_info = async () => {
         if (this.state.shareMyLocation){
-
+          
+          await this.updateUsers()
           let location = await this.getLocationAsync()
           let region = {}
   
@@ -75,10 +80,25 @@ export default class App extends React.Component {
           // #TODO send location
         }
       }
+
+      updateUsers = async ()=>{
+        AsyncStorage.getItem("device").then(device => {
+          AsyncStorage.getItem("team").then(category => {
+
+            GetUsersByCategory(device, category).then(
+              (result)=>{
+                console.log(result)
+              }
+            )
+          })
+        })
+
+      }
+      
       
       async componentDidMount(){
-
-        setTimeout(this.location_set, 5000);
+        
+        setTimeout(this.update_info, 5000);
 
     }
 
