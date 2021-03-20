@@ -58,22 +58,27 @@ export default class AuthScreen extends React.Component {
   Login = () => {
     Keyboard.dismiss()
     if (this.validate()) {
-      PostSetCategory.then(
-        (result)=>{
-          console.log(result)
-          if (!result.error){
+      AsyncStorage.getItem("device").then(device => {
 
-            AsyncStorage.setItem('team', this.state.Login).then(
-              () => {
-                
-                this.props.navigation.navigate('Home')
-      
-              }
-            )
-
+        PostSetCategory(device, this.state.Login).then(
+          (result)=>{
+            console.log(result)
+            if (!result.error){
+  
+              AsyncStorage.setItem('team', this.state.Login).then(
+                () => {
+                  
+                  this.props.navigation.navigate('Home')
+        
+                }
+              )
+  
+            }
           }
-        }
-      )
+        )
+
+      })
+
 
     }
   }

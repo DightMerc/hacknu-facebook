@@ -389,7 +389,7 @@ class CategoryListView(APIView):
 
 class CategoryView(APIView):
 
-    def post(self, request, version):
+    def post(self, request, version, GUID):
 
         try:
             data = json.loads(request.body)
