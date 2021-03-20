@@ -88,6 +88,18 @@ export default class App extends React.Component {
             GetUsersByCategory(device, category).then(
               (result)=>{
                 console.log(result)
+                result.result.map((item, index)=>{
+                  let marker ={
+                    latlng: { 
+                      latitude: parseFloat(item.latitude),
+                      longitude: parseFloat(item.longitude) 
+                    },
+                    title: item.user.firstname,
+                    image: {uri: item.user.photo},
+                    flat: true,
+                  }
+                  console.log(marker)
+                })
               }
             )
           })

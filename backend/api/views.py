@@ -478,7 +478,7 @@ class GetUsersView(APIView):
                 status=status.HTTP_404_NOT_FOUND
             )
 
-        users = CoreModels.MobileUser.objects.filter(category=Category)
+        users = CoreModels.MobileUser.objects.filter(category=Category, pending=True)
 
         data = serializers.MobileUserSerializer(users, many=True).data
 
