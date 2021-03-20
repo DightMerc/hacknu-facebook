@@ -147,7 +147,7 @@ STATIC_URL = "/staticfiles/"
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
 # MEDIA_SITE_URL = os.environ.get("MEDIA_SITE_URL")
-MEDIA_SITE_URL = 'http://127.0.0.1:8000'
+MEDIA_SITE_URL = 'https://test.onezeth.com'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
