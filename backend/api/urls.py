@@ -33,6 +33,6 @@ urlpatterns = [
 
 
     path('<str:GUID>/category/', views.CategoryView.as_view()),
-    path('<str:GUID>/user/<category>/', views.GetUsersView.as_view()),
+    path('<str:GUID>/user/category/<category>/', views.GetUsersView.as_view()),
 
 ]

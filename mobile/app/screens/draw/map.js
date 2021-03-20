@@ -8,6 +8,7 @@ import * as Location from 'expo-location';
 
 import GetUsersByCategory from '../../network/GetUsersByCategory.js'
 import GetSetPending from '../../network/GetSetPending.js'
+import PostSetLocation from '../../network/PostSetLocation.js'
 import GetUser from '../../network/GetUser.js'
 
 import { AsyncStorage } from 'react-native';
@@ -69,6 +70,7 @@ export default class App extends React.Component {
       update_info = async () => {
         if (this.state.shareMyLocation){
           
+          
           await this.updateUsers()
           let location = await this.getLocationAsync()
           let region = {}
@@ -77,6 +79,11 @@ export default class App extends React.Component {
           region.longitude = parseFloat(location.coords.longitude)
           region.latitudeDelta = LATITUDE_DELTA
           region.longitudeDelta = LONGITUDE_DELTA
+
+          await PostSetLocation({
+            'latitude': location.coords.latitude,
+            'longitude': location.coords.longitude
+          })
   
           this.setState({ region: region})
   
@@ -90,7 +97,6 @@ export default class App extends React.Component {
 
             GetUsersByCategory(device, category).then(
               (result)=>{
-                console.log(result)
                 result.result.map((item, index)=>{
                   let marker ={
                     latlng: { 
