@@ -1,7 +1,7 @@
 import * as React from 'react';
 import MapView from 'react-native-maps';
 import { Marker } from 'react-native-maps';
-import { StyleSheet, Text, View, Dimensions, Switch, Image } from 'react-native';
+import { StyleSheet, Text, View, Dimensions, Switch, Image, TouchableOpacity } from 'react-native';
 
 import * as Permissions from 'expo-permissions';
 import * as Location from 'expo-location';
@@ -12,6 +12,8 @@ import PostSetLocation from '../../network/PostSetLocation.js'
 import GetUser from '../../network/GetUser.js'
 
 import { AsyncStorage } from 'react-native';
+
+import {Linking} from 'react-native'
 
 
 const {width, height} = Dimensions.get('window')
@@ -40,7 +42,8 @@ export default class App extends React.Component {
         title: 'test',
         image: require('../../assets/unknown.jpg'),
         flat: true,
-        isPreselected: true
+        isPreselected: true,
+        phone: '998909625288'
       },
       {
         latlng: { 
@@ -67,6 +70,10 @@ export default class App extends React.Component {
         }
       }
 
+      onRegionChange = (region)=> {
+        this.setState({ region });
+      }
+
       update_info = async () => {
         if (this.state.shareMyLocation){
           
@@ -75,10 +82,10 @@ export default class App extends React.Component {
           let location = await this.getLocationAsync()
           let region = {}
   
-          region.latitude = parseFloat(location.coords.latitude)
-          region.longitude = parseFloat(location.coords.longitude)
-          region.latitudeDelta = LATITUDE_DELTA
-          region.longitudeDelta = LONGITUDE_DELTA
+          // region.latitude = parseFloat(location.coords.latitude)
+          // region.longitude = parseFloat(location.coords.longitude)
+          // region.latitudeDelta = LATITUDE_DELTA
+          // region.longitudeDelta = LONGITUDE_DELTA
           
           AsyncStorage.getItem("device").then(device => {
             PostSetLocation(device,{
@@ -88,7 +95,7 @@ export default class App extends React.Component {
 
           })
   
-          this.setState({ region: region})
+          // this.setState({ region: region})
   
           // #TODO send location
         }
@@ -100,6 +107,7 @@ export default class App extends React.Component {
 
             GetUsersByCategory(device, category).then(
               (result)=>{
+                let markers = []
                 result.result.map((item, index)=>{
                   let marker ={
                     latlng: { 
@@ -107,11 +115,14 @@ export default class App extends React.Component {
                       longitude: parseFloat(item.longitude) 
                     },
                     title: item.user.firstname,
-                    image: {uri: item.user.photo},
+                    image: item.user.photo,
                     flat: true,
+                    phone: item.user.phone
                   }
-                  console.log(marker)
+                  markers.push(marker)
                 })
+                console.log(markers)
+                this.setState({markers: markers})
               }
             )
           })
@@ -149,22 +160,29 @@ export default class App extends React.Component {
             style={styles.map}
             initialRegion={this.state.region}
             region={this.state.region}
-            mapType={Platform.OS == "android" ? "none" : "standard"}
+            onRegionChange={this.onRegionChange}
             >
-              {this.state.markers.map((marker, index) => (
+              {/* {this.state.markers.map((marker, index) => (
                 <Marker
                   key={index}
                   coordinate={marker.latlng}
                   title={marker.title}
                   description={marker.description}
+                  tracksViewChanges={false}
+                  onPress={()=>{
+                    Linking.openURL(`tel:${marker.phone}`)
+                  }}
                 >
+                  <TouchableOpacity
+                  >
                   <Image
                     style={styles.MarkerImage}
                     source={marker.image}
                     // ref={(image)=>{this.image = image}}
                   />
+                  </TouchableOpacity>
                 </Marker>
-              ))}
+              ))} */}
             </MapView>
             <View style={styles.ShareMyLocation}>
                 <Switch
@@ -201,8 +219,8 @@ const styles = StyleSheet.create({
     paddingRight: 25
   },
   MarkerImage: {
-    height: 25,
-    width: 25,
+    height: 50,
+    width: 50,
     borderRadius: 25,
     borderWidth: 2,
     borderColor: '#000000'
