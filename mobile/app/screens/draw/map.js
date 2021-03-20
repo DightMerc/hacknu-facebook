@@ -68,6 +68,7 @@ export default class App extends React.Component {
 
       update_info = async () => {
         if (this.state.shareMyLocation){
+          console.log('ok')
           
           await this.updateUsers()
           let location = await this.getLocationAsync()
@@ -112,17 +113,25 @@ export default class App extends React.Component {
       
       
       async componentDidMount(){
-        GetUser.then(
-          (result)=>{
-            console.log(result)
-          }
-        )
+        AsyncStorage.getItem("device").then(device => {
+          GetUser(device).then(
+            (result)=>{
+              this.setState({shareMyLocation: result.result.pending})
+            }
+          )
+
+        })
+
         setInterval(this.update_info, 5000);
 
     }
 
     toggleSwitch = () => {
       this.setState({shareMyLocation: !this.state.shareMyLocation})
+      AsyncStorage.getItem("device").then(device => {
+        GetSetPending(device)
+
+      })
     }
 
     render(){
